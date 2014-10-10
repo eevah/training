@@ -13,18 +13,16 @@ import com.google.inject.Injector
 
 object PageGetter extends App{
 
+  val injector: Injector = Guice.createInjector(new ConfigurationModule());
+  val service: ProxyService = injector.getInstance(classOf[ProxyService])
+  val proxy: Proxy = service.getProxy("http://www.google.com")
 
-    val page = Http("http://www.google.com").asString
 
-//  val injector: Injector = Guice.createInjector(new ConfigurationModule());
-//  val service: ProxyService = injector.getInstance(classOf[ProxyService])
-//  val proxy: Proxy = service.getProxy("http://www.google.com")
-//
-//
-//  println("IP Address: " + proxy.hostname)
-//  println("Port number: " + proxy.port)
-//  println("User name: " + proxy.username)
-//  println("Password: " + proxy.password)
+  println("IP Address: " + proxy.hostname)
+  println("Port number: " + proxy.port)
+  println("User name: " + proxy.username)
+  println("Password: " + proxy.password)
 
+  val page = Http("http://www.google.com").proxy(proxy.hostname, proxy.port).asString
   println(page)
-}
+  }
